@@ -35,6 +35,7 @@ export default function Syllabus() {
 			<p className='font-bold text-[18px]'>Syllabus Wise Analysis</p>
 			{progressData.map((data) => (
 				<ProgressBar
+					key={data.name}
 					name={data.name}
 					completion={data.completion}
 					deepBg={data.deepBg}
