@@ -21,7 +21,7 @@ export default function PercentileGraph({
 }: PercentileGraphProps) {
 	// Find the data point or default to 0 if not found
 	const referenceY = String(
-		data.find((d) => d.percentile === percentile)?.numberOfStudents ?? 0
+		data.find((d) => d.percentile === percentile)?.numberOfStudents ?? 90
 	);
 
 	return (
@@ -69,14 +69,14 @@ export default function PercentileGraph({
 						dot={{ r: 3 }}
 					/>
 					<ReferenceDot
-						x={percentile}
+						x={percentile ? percentile : 50}
 						y={referenceY}
 						r={6}
 						fill='#C084FC'
 						stroke='black'
 						label={({ x, y }) => (
 							<text x={x} y={y! - 10} fill='red' textAnchor='middle'>
-								Your Percentile ({percentile}%)
+								Your Percentile ({percentile ? percentile : 50}%)
 							</text>
 						)}
 					/>

@@ -26,7 +26,7 @@ export default function QuickStats({
 						/>
 					</div>
 					<div className=''>
-						<p className='font-bold text-[18px]'>{rank}</p>
+						<p className='font-bold text-[18px]'>{rank ? rank : 1}</p>
 						<p className='font-semibold text-gray-400'>YOUR RANK</p>
 					</div>
 				</div>
@@ -41,7 +41,9 @@ export default function QuickStats({
 						/>
 					</div>
 					<div className=''>
-						<p className='font-bold text-[18px]'>{percentile}%</p>
+						<p className='font-bold text-[18px]'>
+							{percentile ? percentile : 50}%
+						</p>
 						<p className='font-semibold text-gray-400'>PERCENTILE</p>
 					</div>
 				</div>
@@ -56,7 +58,7 @@ export default function QuickStats({
 						/>
 					</div>
 					<div className=''>
-						<p className='font-bold text-[18px]'>{score}/15</p>
+						<p className='font-bold text-[18px]'>{score ? score : 12}/15</p>
 						<p className='font-semibold text-gray-400'>CORRECT ANSWERS</p>
 					</div>
 				</div>
