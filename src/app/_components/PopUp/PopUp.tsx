@@ -15,25 +15,52 @@ interface PopupProps {
 }
 
 export default function PopUp({ isOpen, onClose, onSubmit }: PopupProps) {
-	const [rank, setRank] = useState("");
-	const [percentile, setPercentile] = useState("");
-	const [score, setScore] = useState("");
+	const [rank, setRank] = useState("1");
+	const [percentile, setPercentile] = useState("50");
+	const [score, setScore] = useState("12");
+
+	const [rankError, setRankError] = useState("");
+	const [percentileError, setPercentileError] = useState("");
+	const [scoreError, setScoreError] = useState("");
 
 	if (!isOpen) return null;
 
+	const validateInputs = () => {
+		let isValid = true;
+
+		if (!rank || isNaN(Number(rank))) {
+			setRankError("Required | should be a number");
+			isValid = false;
+		} else setRankError("");
+
+		if (!percentile || isNaN(Number(percentile))) {
+			setPercentileError("Required | should be a number");
+			isValid = false;
+		} else setPercentileError("");
+
+		if (!score || isNaN(Number(score))) {
+			setScoreError("Required | should be a number");
+			isValid = false;
+		} else setScoreError("");
+
+		return isValid;
+	};
+
 	const handleSubmit = () => {
-		onSubmit({
-			rank: rank ? Number(rank) : undefined,
-			percentile: percentile ? Number(percentile) : undefined,
-			score: score ? Number(score) : undefined,
-		});
-		handleCancel();
+		if (validateInputs()) {
+			onSubmit({
+				rank: rank ? Number(rank) : undefined,
+				percentile: percentile ? Number(percentile) : undefined,
+				score: score ? Number(score) : undefined,
+			});
+			handleCancel();
+		}
 	};
 
 	const handleCancel = () => {
-		setRank("");
-		setPercentile("");
-		setScore("");
+		setRankError("");
+		setPercentileError("");
+		setScoreError("");
 		onClose();
 	};
 
@@ -70,13 +97,16 @@ export default function PopUp({ isOpen, onClose, onSubmit }: PopupProps) {
 							</p>
 						</div>
 
-						<input
-							type='number'
-							placeholder='Rank'
-							value={rank}
-							onChange={(e) => setRank(e.target.value)}
-							className='border border-blue-400 rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield'
-						/>
+						<div className=''>
+							<input
+								type='number'
+								placeholder='Rank'
+								value={rank}
+								onChange={(e) => setRank(e.target.value)}
+								className='border border-blue-400 rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield'
+							/>
+							{rankError && <p className='text-red-500 text-sm'>{rankError}</p>}{" "}
+						</div>
 					</div>
 					<div className='flex justify-between items-center'>
 						<div className='flex gap-4'>
@@ -89,18 +119,23 @@ export default function PopUp({ isOpen, onClose, onSubmit }: PopupProps) {
 							</p>
 						</div>
 
-						<input
-							type='number'
-							placeholder='Percentile'
-							value={percentile}
-							onChange={(e) => {
-								const newValue = parseInt(e.target.value, 10);
-								if (newValue <= 100 || isNaN(newValue)) {
-									setPercentile(e.target.value);
-								}
-							}}
-							className='border border-blue-400 rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield'
-						/>
+						<div className=''>
+							<input
+								type='number'
+								placeholder='Percentile'
+								value={percentile}
+								onChange={(e) => {
+									const newValue = parseInt(e.target.value, 10);
+									if (newValue <= 100 || isNaN(newValue)) {
+										setPercentile(e.target.value);
+									}
+								}}
+								className='border border-blue-400 rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield'
+							/>
+							{percentileError && (
+								<p className='text-red-500 text-sm'>{percentileError}</p>
+							)}{" "}
+						</div>
 					</div>
 					<div className='flex justify-between items-center'>
 						<div className='flex gap-4'>
@@ -114,18 +149,23 @@ export default function PopUp({ isOpen, onClose, onSubmit }: PopupProps) {
 							</p>
 						</div>
 
-						<input
-							type='number'
-							placeholder='Current Score'
-							value={score}
-							onChange={(e) => {
-								const newValue = parseInt(e.target.value, 10);
-								if (newValue <= 15 || isNaN(newValue)) {
-									setScore(e.target.value);
-								}
-							}}
-							className='border border-blue-400 rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield'
-						/>
+						<div className=''>
+							<input
+								type='number'
+								placeholder='Current Score'
+								value={score}
+								onChange={(e) => {
+									const newValue = parseInt(e.target.value, 10);
+									if (newValue <= 15 || isNaN(newValue)) {
+										setScore(e.target.value);
+									}
+								}}
+								className='border border-blue-400 rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield'
+							/>
+							{scoreError && (
+								<p className='text-red-500 text-sm'>{scoreError}</p>
+							)}{" "}
+						</div>
 					</div>
 				</div>
 				<div className='flex justify-end gap-6'>

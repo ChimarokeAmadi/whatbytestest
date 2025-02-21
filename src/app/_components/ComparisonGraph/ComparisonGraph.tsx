@@ -37,7 +37,7 @@ export default function PercentileGraph({
 				</div>
 				<div className='bg-gray-100 rounded-full p-2 flex justify-center items-center'>
 					<Image
-						src={"/notepad.png"}
+						src={"/graph icon.png"}
 						height={100}
 						width={100}
 						alt=''

@@ -33,8 +33,8 @@ export default function StateContainer() {
 	};
 
 	return (
-		<div className='flex gap-10'>
-			<div className='flex flex-col gap-3 min-w-[600px]'>
+		<div className='flex flex-col xl:flex-row gap-10'>
+			<div className='flex flex-col gap-3 lg:min-w-[600px]'>
 				<HyperText onUpdateClick={openPopup} />
 				<PopUp
 					isOpen={isPopupOpen}
