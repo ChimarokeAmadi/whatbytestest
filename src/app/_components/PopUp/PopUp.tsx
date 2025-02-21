@@ -25,33 +25,23 @@ export default function PopUp({ isOpen, onClose, onSubmit }: PopupProps) {
 
 	if (!isOpen) return null;
 
-	const validateInputs = () => {
-		let isValid = true;
-
-		if (!rank || isNaN(Number(rank))) {
-			setRankError("Required | should be a number");
-			isValid = false;
-		} else setRankError("");
-
-		if (!percentile || isNaN(Number(percentile))) {
-			setPercentileError("Required | should be a number");
-			isValid = false;
-		} else setPercentileError("");
-
-		if (!score || isNaN(Number(score))) {
-			setScoreError("Required | should be a number");
-			isValid = false;
-		} else setScoreError("");
-
-		return isValid;
+	// ✅ Reusable validation function
+	const validateField = (value: string, setError: (msg: string) => void) => {
+		if (!value.trim()) setError("Required | should be a number");
+		else if (isNaN(Number(value))) setError("Should be a number");
+		else setError("");
 	};
 
 	const handleSubmit = () => {
-		if (validateInputs()) {
+		validateField(rank, setRankError);
+		validateField(percentile, setPercentileError);
+		validateField(score, setScoreError);
+
+		if (!rankError && !percentileError && !scoreError) {
 			onSubmit({
-				rank: rank ? Number(rank) : undefined,
-				percentile: percentile ? Number(percentile) : undefined,
-				score: score ? Number(score) : undefined,
+				rank: Number(rank),
+				percentile: Number(percentile),
+				score: Number(score),
 			});
 			handleCancel();
 		}
@@ -86,88 +76,94 @@ export default function PopUp({ isOpen, onClose, onSubmit }: PopupProps) {
 
 				{/* Input fields */}
 				<div className='flex flex-col gap-7 mb-6 '>
+					{/* Rank Input */}
 					<div className='flex justify-between items-center'>
 						<div className='flex gap-4'>
-							<div className=' rounded-[100%] size-6 font-bold text-white bg-blue-800 text-center'>
+							<div className='rounded-full size-6 font-bold text-white bg-blue-800 text-center'>
 								1
 							</div>
-
-							<p className=''>
+							<p>
 								Update your <span className='font-bold'>Rank</span>
 							</p>
 						</div>
-
-						<div className=''>
+						<div>
 							<input
 								type='number'
 								placeholder='Rank'
 								value={rank}
-								onChange={(e) => setRank(e.target.value)}
-								className='border border-blue-400 rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield'
+								onChange={(e) => {
+									setRank(e.target.value);
+									validateField(e.target.value, setRankError);
+								}}
+								className={`border ${
+									rankError ? "border-red-500" : "border-blue-400"
+								} rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield`}
 							/>
-							{rankError && <p className='text-red-500 text-sm'>{rankError}</p>}{" "}
+							{rankError && <p className='text-red-500 text-sm'>{rankError}</p>}
 						</div>
 					</div>
+
+					{/* Percentile Input */}
 					<div className='flex justify-between items-center'>
 						<div className='flex gap-4'>
-							<div className=' rounded-[100%] size-6 font-bold text-white bg-blue-800 text-center'>
+							<div className='rounded-full size-6 font-bold text-white bg-blue-800 text-center'>
 								2
 							</div>
-
-							<p className=''>
+							<p>
 								Update your <span className='font-bold'>Percentile</span>
 							</p>
 						</div>
-
-						<div className=''>
+						<div>
 							<input
 								type='number'
 								placeholder='Percentile'
 								value={percentile}
 								onChange={(e) => {
-									const newValue = parseInt(e.target.value, 10);
-									if (newValue <= 100 || isNaN(newValue)) {
-										setPercentile(e.target.value);
-									}
+									setPercentile(e.target.value);
+									validateField(e.target.value, setPercentileError);
 								}}
-								className='border border-blue-400 rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield'
+								className={`border ${
+									percentileError ? "border-red-500" : "border-blue-400"
+								} rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield`}
 							/>
 							{percentileError && (
 								<p className='text-red-500 text-sm'>{percentileError}</p>
-							)}{" "}
+							)}
 						</div>
 					</div>
+
+					{/* Score Input */}
 					<div className='flex justify-between items-center'>
 						<div className='flex gap-4'>
-							<div className=' rounded-[100%] size-6 font-bold text-white bg-blue-800 text-center'>
+							<div className='rounded-full size-6 font-bold text-white bg-blue-800 text-center'>
 								3
 							</div>
-
-							<p className=''>
+							<p>
 								Update your{" "}
 								<span className='font-bold'>Current Score (out of 15)</span>
 							</p>
 						</div>
-
-						<div className=''>
+						<div>
 							<input
 								type='number'
 								placeholder='Current Score'
 								value={score}
 								onChange={(e) => {
-									const newValue = parseInt(e.target.value, 10);
-									if (newValue <= 15 || isNaN(newValue)) {
-										setScore(e.target.value);
-									}
+									setScore(e.target.value);
+									validateField(e.target.value, setScoreError);
 								}}
-								className='border border-blue-400 rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield'
+								className={`border ${
+									scoreError ? "border-red-500" : "border-blue-400"
+								} rounded-md p-2 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield`}
 							/>
 							{scoreError && (
 								<p className='text-red-500 text-sm'>{scoreError}</p>
-							)}{" "}
+							)}
 						</div>
 					</div>
 				</div>
+
+				{/* Buttons */}
 				<div className='flex justify-end gap-6'>
 					<button
 						onClick={handleCancel}

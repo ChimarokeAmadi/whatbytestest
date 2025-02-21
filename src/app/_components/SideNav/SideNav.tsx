@@ -30,7 +30,7 @@ export default function SideNav() {
 	};
 
 	return (
-		<nav className='border-r border-slate-200 h-screen pt-12 relative'>
+		<nav className='border-r border-slate-200 h-[150vph] pt-12 relative'>
 			<ul className=' absolute top-[48px] left-[-1.5rem] w-full  flex flex-col  h-full text-lg'>
 				{navLinks.map((link) => {
 					const Icon = link.icon;
